@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Central de Sites Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Deep Dark Theme Colors */
+            --primary-bg-start: #0a0a0a; /* Almost black */
+            --primary-bg-end: #1a0a2a;   /* Dark purple hint */
+            --gradient-1: linear-gradient(135deg, var(--primary-bg-start) 0%, var(--primary-bg-end) 100%);
+            --gradient-2: radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.1) 0%, transparent 40%),
+                          radial-gradient(circle at 80% 70%, rgba(37, 117, 252, 0.1) 0%, transparent 40%);
+
+            /* Accent Colors */
+            --accent-primary: #8a2be2; /* Blue Violet */
+            --accent-secondary: #00bcd4; /* Cyan */
+            --accent-success: #00e676; /* Green */
+            --accent-danger: #ff416c; /* Red */
+            --accent-warning: #f7971e; /* Orange */
+            --accent-info: #2196f3; /* Blue */
+            
+            /* Text Colors */
+            --text-color-light: #e0e0e0;
+            --text-color-dim: rgba(224, 224, 224, 0.6);
+            --text-color-dark: #333333; /* For elements on light backgrounds */
+            
+            /* UI Elements */
+            --card-bg: rgba(255, 255, 255, 0.05); /* Very subtle transparency */
+            --card-hover-bg: rgba(255, 255, 255, 0.1);
+            --container-bg: rgba(0, 0, 0, 0.4); /* Darker, more solid container */
+            --input-bg: rgba(255, 255, 255, 0.95);
+            --modal-overlay-bg: rgba(0, 0, 0, 0.9);
+            --modal-content-bg: linear-gradient(135deg, #150525 0%, #050515 100%); /* Even darker modal */
+            
+            /* Shadows & Borders */
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            --shadow-medium: rgba(0, 0, 0, 0.5);
+            --shadow-strong: rgba(0, 0, 0, 0.7);
+            --border-light: 1px solid rgba(255, 255, 255, 0.1);
+            --border-dark: 1px solid rgba(0, 0, 0, 0.15);
+            
+            /* Spacing & Radii */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 15px;
+            --spacing-lg: 20px;
+            --spacing-xl: 30px;
+            --spacing-xxl: 40px;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 24px; /* Slightly larger for premium feel */
+            --border-radius-circle: 50%;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease-out;
+            --transition-medium: 0.3s ease-out;
+            --transition-slow: 0.5s ease-out;
+        }
+
+        /* Light Theme Variables (for toggle) */
+        body.light-theme {
+            --primary-bg-start: #f0f0f5;
+            --primary-bg-end: #ffffff;
+            --gradient-1: linear-gradient(135deg, var(--primary-bg-start) 0%, var(--primary-bg-end) 100%);
+            --gradient-2: radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.05) 0%, transparent 40%),
+                          radial-gradient(circle at 80% 70%, rgba(37, 117, 252, 0.05) 0%, transparent 40%);
+
+            --text-color-light: #333333;
+            --text-color-dim: rgba(51, 51, 51, 0.6);
+            --text-color-dark: #333333;
+            
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover-bg: rgba(245, 245, 250, 1);
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --input-bg: rgba(255, 255, 255, 1);
+            --modal-overlay-bg: rgba(255, 255, 255, 0.8);
+            --modal-content-bg: linear-gradient(135deg, #fefefe 0%, #e0e0e0 100%);
+            
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --shadow-strong: rgba(0, 0, 0, 0.25);
+            --border-light: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--gradient-1);
+            color: var(--text-color-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            transition: background var(--transition-medium), color var(--transition-medium);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            z-index: -1;
+            pointer-events: none;
+            transition: background var(--transition-medium);
+        }
+
+        /* Layout */
+        .app-container {
+            max-width: 1300px; /* Slightly wider */
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xxl);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            padding-top: var(--spacing-xl); /* Add some top padding */
+        }
+
+        .main-title {
+            font-size: 4rem; /* Larger title */
+            font-weight: 800;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(45deg, #a0d4f2, #ffffff, #8a2be2); /* Dynamic, vibrant gradient */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 4px 20px rgba(0, 188, 212, 0.4); /* Stronger shadow */
+            letter-spacing: -2px;
+            animation: text-glow 3s ease-in-out infinite alternate; /* Slower, more impactful glow */
+        }
+
+        @keyframes text-glow {
+            0% { text-shadow: 0 4px 20px rgba(0, 188, 212, 0.4); }
+            100% { text-shadow: 0 8px 30px rgba(0, 188, 212, 0.8); }
+        }
+
+        .subtitle {
+            font-size: 1.3rem; /* Slightly larger subtitle */
+            color: var(--text-color-dim);
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Cards Container */
+        .card-container {
+            background-color: var(--container-bg);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xxl);
+            box-shadow: 0 20px 60px var(--shadow-strong); /* Stronger overall shadow */
+            backdrop-filter: blur(20px); /* More intense blur */
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--border-light);
+            transition: background-color var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium);
+            position: relative; /* For background animations */
+            overflow: hidden; /* Ensure no overflow from effects */
+        }
+
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
+            opacity: 0.05;
+            animation: move-blob 15s infinite alternate ease-in-out;
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        .card-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
+            opacity: 0.05;
+            animation: move-blob 12s infinite alternate-reverse ease-in-out;
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        @keyframes move-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(20px, -30px) scale(1.05); }
+            50% { transform: translate(-30px, 40px) scale(0.95); }
+            75% { transform: translate(40px, -20px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .light-theme .card-container {
+            border: var(--border-light);
+        }
+
+        .section-title {
+            font-size: 2.5rem; /* Larger section titles */
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            color: var(--text-color-light);
+            text-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .section-title i {
+            font-size: 2.2rem;
+            color: var(--accent-primary); /* Use primary accent for icons */
+        }
+
+        /* Form */
+        .form-add-site {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xxl); /* More space below form */
+            align-items: flex-end; /* Align button to bottom */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .form-label {
+            font-size: 1rem; /* Slightly larger label */
+            color: var(--text-color-dim);
+            font-weight: 500;
+            margin-left: var(--spacing-sm);
+        }
+
+        .form-input {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            background-color: var(--input-bg);
+            color: var(--text-color-dark);
+            font-size: 1rem;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1); /* Deeper inset shadow */
+            transition: all var(--transition-medium);
+            width: 100%;
+        }
+
+        .form-input::placeholder {
+            color: rgba(51, 51, 51, 0.5);
+        }
+
+        .form-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px var(--accent-secondary), inset 0 2px 8px rgba(0, 0, 0, 0.2); /* Thicker focus ring */
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right var(--spacing-md) center;
+            background-size: 1rem;
+        }
+
+        .dark-theme .form-select { /* Ensure arrow is white in dark mode */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        }
+
+        .btn {
+            padding: var(--spacing-md) var(--spacing-xl);
+            border: none;
+            border-radius: var(--border-radius-lg);
+            cursor: pointer;
+            font-size: 1.05rem; /* Slightly larger font */
+            font-weight: 600;
+            transition: all var(--transition-medium);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-secondary) 0%, #00c7a8 100%); /* More distinct primary gradient */
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 188, 212, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px); /* More pronounced lift */
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.8);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Site Grid */
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Larger base size */
+            gap: var(--spacing-lg);
+            width: 100%;
+        }
+
+        .site-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-xl); /* Rounded corners */
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            box-shadow: 0 8px 25px var(--shadow-light); /* Better shadow */
+            position: relative;
+            overflow: hidden;
+            border: var(--border-light);
+            animation: fadeIn 0.6s ease-out; /* Slower fade in */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .site-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 50%,
+                rgba(255, 255, 255, 0.1) 50%, /* More visible shine */
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            transform: rotate(30deg);
+            transition: all var(--transition-slow);
+            opacity: 0;
+            z-index: 1; /* Above other content for shine effect */
+        }
+
+        .site-card:hover {
+            transform: translateY(-10px) scale(1.02); /* More pronounced hover effect */
+            background-color: var(--card-hover-bg);
+            box-shadow: 0 15px 40px var(--shadow-medium);
+        }
+
+        .site-card:hover::before {
+            animation: shine 2s infinite ease-in-out; /* Faster, smoother shine */
+            opacity: 1;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-50%, -50%); }
+            100% { transform: rotate(30deg) translate(50%, 50%); }
+        }
+
+        .site-card.fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(30px); }
+        }
+
+        .site-card .site-link {
+            color: var(--text-color-light); /* Ensure text color matches theme */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.3rem; /* Larger font */
+            margin-top: var(--spacing-md);
+            word-break: break-word;
+            width: 100%;
+            transition: color var(--transition-fast);
+            display: block;
+            pointer-events: none;
+            line-height: 1.3;
+        }
+
+        .site-card:hover .site-link {
+            color: var(--accent-secondary);
+        }
+
+        .site-card .card-actions {
+            position: absolute;
+            top: var(--spacing-sm);
+            right: var(--spacing-sm);
+            display: flex;
+            gap: var(--spacing-xs);
+            opacity: 0;
+            transition: opacity var(--transition-medium);
+            pointer-events: none;
+            z-index: 2; /* Ensure actions are above shine */
+        }
+
+        .site-card.show-actions .card-actions {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .action-btn {
+            background: rgba(0, 0, 0, 0.6); /* Darker, more prominent action buttons */
+            border: none;
+            color: var(--text-color-light);
+            width: 38px; /* Larger buttons */
+            height: 38px;
+            border-radius: var(--border-radius-circle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        .light-theme .action-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-color-dark);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.2); /* More noticeable scale */
+        }
+
+        .btn-remove:hover {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: var(--accent-warning);
+            color: white;
+        }
+
+        .btn-pin:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .site-icon {
+            width: 90px; /* Even larger icon */
+            height: 90px;
+            border-radius: var(--border-radius-circle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem; /* Larger font for initials */
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(45deg, #4CAF50, #2196F3); /* Default vibrant gradient for icons */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        }
+        
+        /* Dynamic icon background for favicons */
+        .site-icon[data-has-favicon="true"] {
+            background: none; /* Remove gradient if favicon is loaded */
+            border: none; /* Remove border if favicon is loaded */
+        }
+
+
+        .light-theme .site-icon {
+            background: linear-gradient(45deg, #66BB6A, #42A5F5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 2px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .site-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .site-icon .icon-fallback {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.3); /* Darker fallback background */
+            transition: background-color var(--transition-medium);
+        }
+        
+        .light-theme .site-icon .icon-fallback {
+             background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .site-category {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--spacing-xs) 0;
+            background: rgba(0, 0, 0, 0.5); /* More opaque category background */
+            font-size: 0.8rem; /* Slightly larger font */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.08); /* More visible top border */
+            transition: background var(--transition-medium), color var(--transition-medium), border-color var(--transition-medium);
+        }
+
+        .light-theme .site-category {
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-color-dark);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        /* Categories Filter */
+        .categories-container {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-filter {
+            padding: var(--spacing-sm) var(--spacing-lg); /* Larger padding */
+            border-radius: var(--border-radius-lg);
+            background: rgba(255, 255, 255, 0.1);
+            border: var(--border-light);
+            color: var(--text-color-light);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 0.95rem; /* Slightly larger font */
+            font-weight: 500;
+        }
+
+        .light-theme .category-filter {
+            background: rgba(0, 0, 0, 0.05);
+            border: var(--border-dark);
+            color: var(--text-color-dark);
+        }
+
+        .category-filter:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px); /* Subtle lift on hover */
+        }
+        
+        .light-theme .category-filter:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .category-filter.active {
+            background: var(--accent-secondary);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 188, 212, 0.5); /* Stronger shadow */
+            border-color: var(--accent-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--modal-overlay-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-medium);
+            backdrop-filter: blur(10px); /* Very strong blur */
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--modal-content-bg);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xxl);
+            width: 90%;
+            max-width: 550px; /* Slightly wider modal */
+            box-shadow: 0 25px 60px var(--shadow-strong); /* Extremely strong shadow */
+            transform: translateY(30px); /* More pronounced slide-in */
+            transition: transform var(--transition-medium), background var(--transition-medium), border-color var(--transition-medium);
+            position: relative;
+            border: var(--border-light);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: none;
+            border: none;
+            color: var(--text-color-dim);
+            font-size: 1.8rem; /* Larger close button */
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--accent-danger);
+            transform: rotate(90deg); /* Spin on close */
+        }
+
+        .modal-title {
+            font-size: 2.2rem; /* Larger modal title */
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            color: var(--text-color-light);
+        }
+
+        /* Notifications */
+        .notification-container {
+            position: fixed;
+            top: var(--spacing-xl);
+            right: var(--spacing-xl);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .notification {
+            background-color: rgba(0, 0, 0, 0.95); /* Almost opaque */
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            box-shadow: 0 6px 20px var(--shadow-medium); /* Stronger shadow */
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.4s forwards, fadeOutNotification 3.5s forwards 2.5s; /* Longer display */
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            border-left: 5px solid; /* Thicker border */
+            max-width: 380px; /* Wider notification */
+            font-size: 0.95rem;
+        }
+
+        .light-theme .notification {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--text-color-dark);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-success { border-left-color: var(--accent-success); }
+        .notification-error { border-left-color: var(--accent-danger); }
+        .notification-warning { border-left-color: var(--accent-warning); }
+        .notification-info { border-left-color: var(--accent-info); }
+
+        .notification i {
+            font-size: 1.6rem; /* Larger icon */
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeOutNotification {
+            0% { opacity: 1; transform: translateX(0); }
+            80% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--spacing-xxl) 0;
+            color: var(--text-color-dim);
+            opacity: 0.8;
+        }
+
+        .empty-state i {
+            font-size: 3.5rem; /* Larger icon */
+            margin-bottom: var(--spacing-md);
+            opacity: 0.6;
+            color: var(--accent-primary); /* Accent color for empty state icons */
+        }
+
+        .empty-state p {
+            font-size: 1.2rem; /* Larger text */
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Pinned Sites */
+        .pinned-sites {
+            margin-bottom: var(--spacing-xxl);
+        }
+
+        .pinned-sites .sites-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Even larger for pinned */
+        }
+
+        .pinned-sites .site-card {
+            border: 3px solid var(--accent-warning); /* Thicker, more prominent border */
+            box-shadow: 0 10px 30px rgba(247, 151, 30, 0.6); /* Very strong shadow for pinned */
+        }
+        
+        .light-theme .pinned-sites .site-card {
+             box-shadow: 0 10px 30px rgba(247, 151, 30, 0.3);
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-lg);
+            padding-left: 55px; /* More space for icon */
+            border: none;
+            border-radius: var(--border-radius-lg);
+            background-color: var(--input-bg);
+            color: var(--text-color-dark);
+            font-size: 1.1rem; /* Larger font */
+            box-shadow: 0 6px 20px var(--shadow-light); /* Stronger shadow */
+            transition: all var(--transition-medium);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px var(--accent-info), 0 6px 20px var(--shadow-medium); /* Accent info for search focus */
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-dark);
+            font-size: 1.3rem; /* Larger search icon */
+            transition: color var(--transition-medium);
+        }
+        
+        .dark-theme .search-icon {
+            color: rgba(0, 0, 0, 0.5); /* Slightly darker in dark mode for contrast on white input */
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .main-title {
+                font-size: 3.5rem;
+            }
+            .form-add-site {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-add-site .form-group:last-of-type,
+            .form-add-site button {
+                grid-column: span 2;
+            }
+            .sites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            .pinned-sites .sites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: var(--spacing-lg);
+            }
+            .main-title {
+                font-size: 2.8rem;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            .card-container {
+                padding: var(--spacing-xl);
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .site-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+            .modal-content {
+                padding: var(--spacing-xl);
+            }
+            .stats-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .stat-card {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-title {
+                font-size: 2.2rem;
+                letter-spacing: -1px;
+            }
+            .subtitle {
+                font-size: 0.95rem;
+            }
+            .card-container {
+                padding: var(--spacing-lg);
+            }
+            .site-card {
+                padding: var(--spacing-md);
+            }
+            .site-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+            }
+            .site-card .site-link {
+                font-size: 1.1rem;
+            }
+            .form-add-site {
+                grid-template-columns: 1fr;
+            }
+            .form-add-site .form-group:last-of-type,
+            .form-add-site button {
+                grid-column: span 1;
+            }
+            .notification-container {
+                top: var(--spacing-md);
+                right: var(--spacing-md);
+                left: var(--spacing-md);
+                max-width: unset;
+            }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: var(--spacing-xl);
+            right: var(--spacing-xl);
+            width: 60px; /* Larger toggle */
+            height: 60px;
+            border-radius: var(--border-radius-circle);
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); /* Darker, more prominent toggle */
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Larger icon */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            transition: all var(--transition-medium);
+        }
+
+        .light-theme .theme-toggle {
+            background: linear-gradient(135deg, #2196f3 0%, #03a9f4 100%); /* Bright blue for light mode toggle */
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.15) rotate(45deg); /* More dynamic hover */
+        }
+
+        /* Stats */
+        .stats-container {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xxl); /* More space below stats */
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08); /* More subtle background */
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg) var(--spacing-xl); /* More horizontal padding */
+            min-width: 160px; /* Wider stat cards */
+            text-align: center;
+            backdrop-filter: blur(8px);
+            border: var(--border-light);
+            flex: 1;
+            min-width: 140px;
+            transition: background var(--transition-medium), border-color var(--transition-medium);
+        }
+
+        .light-theme .stat-card {
+            background: rgba(0, 0, 0, 0.05);
+            border: var(--border-dark);
+        }
+
+        .stat-value {
+            font-size: 2.5rem; /* Even larger value */
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent-success));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.9rem; /* Slightly larger label */
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-color-dim);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-12px) rotateX(2deg); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite; /* Slower, more subtle float */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px; /* Thicker scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08); /* More visible track */
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary); /* Accent color for thumb */
+            border-radius: 5px;
+            transition: background var(--transition-fast);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-secondary); /* Hover accent */
+        }
+
+        .light-theme ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .light-theme ::-webkit-scrollbar-thumb {
+            background: var(--accent-info);
+        }
+
+        .light-theme ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container" id="notification-container"></div>
+    
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="app-container">
+        <header class="header">
+            <h1 class="main-title floating">Super Central de Sites</h1>
+            <p class="subtitle">Organize, encontre e acesse seus destinos digitais favoritos com maestria e um design impecável.</p>
+        </header>
+
+        <div class="card-container">
+            <h2 class="section-title">
+                <i class="fas fa-plus-circle"></i>
+                Adicionar Novo Site
+            </h2>
+            
+            <form id="add-site-form" class="form-add-site">
+                <div class="form-group">
+                    <label for="site-name" class="form-label">Nome do Site</label>
+                    <input type="text" id="site-name" class="form-input" placeholder="Ex: Google" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="site-url" class="form-label">URL do Site</label>
+                    <input type="text" id="site-url" class="form-input" placeholder="Ex: https://google.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="site-category" class="form-label">Categoria</label>
+                    <select id="site-category" class="form-input form-select">
+                        <option value="geral">Geral</option>
+                        <option value="trabalho">Trabalho</option>
+                        <option value="estudo">Estudo</option>
+                        <option value="entretenimento">Entretenimento</option>
+                        <option value="redes-sociais">Redes Sociais</option>
+                        <option value="noticias">Notícias</option>
+                        <option value="compras">Compras</option>
+                        <option value="design">Design & Criatividade</option>
+                        <option value="programacao">Programação</option>
+                        <option value="saude">Saúde & Bem-estar</option>
+                        <option value="financas">Finanças</option>
+                        <option value="desenvolvimento">Desenvolvimento</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="arte">Arte & Cultura</option>
+                        <option value="viagem">Viagem</option>
+                        <option value="jogos">Jogos</option>
+                        <option value="culinaria">Culinária</option>
+                        <option value="esportes">Esportes</option>
+                        <option value="moda">Moda</option>
+                        <option value="educacao">Educação</option>
+                        <option value="musica">Música</option>
+                        <option value="filmes-series">Filmes & Séries</option>
+                        <option value="documentacao">Documentação</option>
+                        <option value="ferramentas">Ferramentas</option>
+                        <option value="produtividade">Produtividade</option>
+                        <option value="comunidade">Comunidade</option>
+                        <option value="blog">Blogs & Pessoal</option>
+                        <option value="podcast">Podcasts</option>
+                        <option value="referencia">Referência</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Adicionar
+                </button>
+            </form>
+        </div>
+
+        <div class="card-container">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="search-input" placeholder="Pesquisar sites por nome, URL ou categoria...">
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-sites">0</div>
+                    <div class="stat-label">Sites Totais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pinned-sites-count">0</div> 
+                    <div class="stat-label">Sites Fixados</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="categories-count">0</div>
+                    <div class="stat-label">Categorias Ativas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="last-added">-</div>
+                    <div class="stat-label">Último Adicionado</div>
+                </div>
+            </div>
+            
+            <div class="pinned-sites" id="pinned-container">
+                <h2 class="section-title">
+                    <i class="fas fa-thumbtack"></i>
+                    Seus Sites Fixados
+                </h2>
+                <div class="sites-grid" id="pinned-sites-container">
+                    </div>
+            </div>
+
+            <h2 class="section-title">
+                <i class="fas fa-compass"></i>
+                Explorar Todos os Sites
+            </h2>
+            
+            <div class="categories-container" id="categories-filter">
+                <div class="category-filter active" data-category="all">Todos</div>
+                </div>
+            
+            <div class="sites-grid" id="sites-container">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="modal-title">Editar Detalhes do Site</h3>
+            
+            <form id="edit-site-form">
+                <div class="form-group">
+                    <label for="edit-site-name" class="form-label">Nome do Site</label>
+                    <input type="text" id="edit-site-name" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-site-url" class="form-label">URL do Site</label>
+                    <input type="text" id="edit-site-url" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-site-category" class="form-label">Categoria</label>
+                    <select id="edit-site-category" class="form-input form-select">
+                        <option value="geral">Geral</option>
+                        <option value="trabalho">Trabalho</option>
+                        <option value="estudo">Estudo</option>
+                        <option value="entretenimento">Entretenimento</option>
+                        <option value="redes-sociais">Redes Sociais</option>
+                        <option value="noticias">Notícias</option>
+                        <option value="compras">Compras</option>
+                        <option value="design">Design & Criatividade</option>
+                        <option value="programacao">Programação</option>
+                        <option value="saude">Saúde & Bem-estar</option>
+                        <option value="financas">Finanças</option>
+                        <option value="desenvolvimento">Desenvolvimento</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="arte">Arte & Cultura</option>
+                        <option value="viagem">Viagem</option>
+                        <option value="jogos">Jogos</option>
+                        <option value="culinaria">Culinária</option>
+                        <option value="esportes">Esportes</option>
+                        <option value="moda">Moda</option>
+                        <option value="educacao">Educação</option>
+                        <option value="musica">Música</option>
+                        <option value="filmes-series">Filmes & Séries</option>
+                        <option value="documentacao">Documentação</option>
+                        <option value="ferramentas">Ferramentas</option>
+                        <option value="produtividade">Produtividade</option>
+                        <option value="comunidade">Comunidade</option>
+                        <option value="blog">Blogs & Pessoal</option>
+                        <option value="podcast">Podcasts</option>
+                        <option value="referencia">Referência</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+                
+                <input type="hidden" id="edit-site-id">
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-md);">
+                    <i class="fas fa-save"></i>
+                    Salvar Alterações
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const addSiteForm = document.getElementById('add-site-form');
+        const siteNameInput = document.getElementById('site-name');
+        const siteUrlInput = document.getElementById('site-url');
+        const siteCategoryInput = document.getElementById('site-category');
+        const sitesContainer = document.getElementById('sites-container');
+        const pinnedSitesContainer = document.getElementById('pinned-sites-container');
+        const notificationContainer = document.getElementById('notification-container');
+        const searchInput = document.getElementById('search-input');
+        const categoriesFilter = document.getElementById('categories-filter');
+        const editModal = document.getElementById('edit-modal');
+        const editForm = document.getElementById('edit-site-form');
+        const editNameInput = document.getElementById('edit-site-name');
+        const editUrlInput = document.getElementById('edit-site-url');
+        const editCategoryInput = document.getElementById('edit-site-category');
+        const editSiteIdInput = document.getElementById('edit-site-id');
+        const modalClose = document.getElementById('modal-close');
+        const themeToggle = document.getElementById('theme-toggle');
+        const totalSitesEl = document.getElementById('total-sites');
+        const pinnedSitesCountEl = document.getElementById('pinned-sites-count');
+        const categoriesCountEl = document.getElementById('categories-count');
+        const lastAddedEl = document.getElementById('last-added');
+        const pinnedContainer = document.getElementById('pinned-container');
+
+        // Variáveis de estado
+        let currentSites = [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let editSiteId = null;
+        let pressTimer; // Timer for long press detection
+        const LONG_PRESS_THRESHOLD = 500; // ms
+
+        // Mapeamento de categorias para nomes amigáveis (Expandido)
+        const categoryNames = {
+            'all': 'Todos',
+            'geral': 'Geral',
+            'trabalho': 'Trabalho',
+            'estudo': 'Estudo',
+            'entretenimento': 'Entretenimento',
+            'redes-sociais': 'Redes Sociais',
+            'noticias': 'Notícias',
+            'compras': 'Compras',
+            'design': 'Design & Criatividade',
+            'programacao': 'Programação',
+            'saude': 'Saúde & Bem-estar',
+            'financas': 'Finanças',
+            'desenvolvimento': 'Desenvolvimento',
+            'tecnologia': 'Tecnologia',
+            'arte': 'Arte & Cultura',
+            'viagem': 'Viagem',
+            'jogos': 'Jogos',
+            'culinaria': 'Culinária',
+            'esportes': 'Esportes',
+            'moda': 'Moda',
+            'educacao': 'Educação',
+            'musica': 'Música',
+            'filmes-series': 'Filmes & Séries',
+            'documentacao': 'Documentação',
+            'ferramentas': 'Ferramentas',
+            'produtividade': 'Produtividade',
+            'comunidade': 'Comunidade',
+            'blog': 'Blogs & Pessoal',
+            'podcast': 'Podcasts',
+            'referencia': 'Referência',
+            'outros': 'Outros'
+        };
+
+        // Inicialização ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSites();
+            setupEventListeners();
+            updateStats();
+            renderCategoryFilters(); // Render categories dynamically
+        });
+
+        /**
+         * Configura todos os event listeners para os elementos da página.
+         */
+        function setupEventListeners() {
+            addSiteForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                addSite();
+            });
+
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value.toLowerCase();
+                filterAndRenderSites();
+            });
+
+            categoriesFilter.addEventListener('click', function(e) {
+                if (e.target.classList.contains('category-filter')) {
+                    document.querySelectorAll('.category-filter').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.category;
+                    filterAndRenderSites();
+                }
+            });
+
+            modalClose.addEventListener('click', closeModal);
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    closeModal();
+                }
+            });
+            editForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveEditedSite();
+            });
+
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // Set initial theme based on localStorage
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.classList.add(savedTheme + '-theme');
+            updateThemeToggle(savedTheme);
+
+            // Hide site actions when clicking outside of a card
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('.site-card')) {
+                    hideAllSiteActions();
+                }
+            });
+        }
+
+        /**
+         * Carrega os sites do localStorage.
+         * Garante que cada site tenha um ID único e um timestamp de criação.
+         */
+        function loadSites() {
+            const sitesString = localStorage.getItem('mySites');
+            currentSites = sitesString ? JSON.parse(sitesString) : [];
+            
+            // Ensure unique IDs and proper createdAt for older entries
+            currentSites.forEach(site => {
+                if (!site.id) {
+                    site.id = 'site-' + Date.now() + Math.floor(Math.random() * 1000);
+                }
+                if (!site.createdAt) {
+                    site.createdAt = new Date().toISOString(); // Backfill for older sites
+                }
+                // Ensure 'pinned' property exists
+                if (typeof site.pinned === 'undefined') {
+                    site.pinned = false;
+                }
+            });
+            saveAllSites(); // Save with updated IDs/createdAt/pinned if any
+            
+            filterAndRenderSites();
+            updateStats();
+        }
+
+        /**
+         * Renderiza os botões de filtro de categoria dinamicamente
+         * com base nas categorias existentes nos sites e na lista predefinida.
+         */
+        function renderCategoryFilters() {
+            // Get all unique categories from current sites, plus pre-defined ones
+            const allCategories = new Set(Object.keys(categoryNames));
+            currentSites.forEach(site => allCategories.add(site.category || 'geral'));
+
+            // Remove 'all' from sorting as it should always be first
+            const sortedCategories = Array.from(allCategories).filter(cat => cat !== 'all').sort();
+
+            // Clear existing filters except 'Todos'
+            categoriesFilter.innerHTML = '<div class="category-filter active" data-category="all">Todos</div>';
+
+            // Add each unique category
+            sortedCategories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.classList.add('category-filter');
+                categoryDiv.dataset.category = category;
+                categoryDiv.textContent = getCategoryName(category);
+                categoriesFilter.appendChild(categoryDiv);
+            });
+
+            // Re-activate current filter if it exists
+            const currentActiveFilter = categoriesFilter.querySelector(`[data-category="${currentFilter}"]`);
+            if (currentActiveFilter) {
+                document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
+                currentActiveFilter.classList.add('active');
+            }
+        }
+
+        /**
+         * Aplica os filtros de pesquisa e categoria e renderiza os sites
+         * nas seções 'fixados' e 'todos os sites'.
+         */
+        function filterAndRenderSites() {
+            let visibleSites = [...currentSites];
+            
+            // Apply search filter
+            if (currentSearch) {
+                visibleSites = visibleSites.filter(site => 
+                    site.name.toLowerCase().includes(currentSearch) || 
+                    site.url.toLowerCase().includes(currentSearch) ||
+                    getCategoryName(site.category || 'geral').toLowerCase().includes(currentSearch)
+                );
+            }
+
+            // Separate and render pinned sites
+            const pinnedSites = visibleSites.filter(site => site.pinned);
+            renderSites(pinnedSites, pinnedSitesContainer, true); // true indicates it's the pinned container
+
+            // Filter non-pinned sites by category
+            let nonPinnedAndCategorizedSites = visibleSites.filter(site => !site.pinned);
+
+            if (currentFilter !== 'all') {
+                nonPinnedAndCategorizedSites = nonPinnedAndCategorizedSites.filter(site => 
+                    (site.category || 'geral') === currentFilter
+                );
+            }
+            
+            renderSites(nonPinnedAndCategorizedSites, sitesContainer);
+        }
+
+        /**
+         * Renderiza uma lista de sites em um container DOM específico.
+         * Exibe um estado vazio se não houver sites.
+         * @param {Array} sites - O array de objetos de site a serem renderizados.
+         * @param {HTMLElement} container - O elemento DOM onde os cards serão adicionados.
+         * @param {boolean} isPinnedContainer - Indica se o container é o de sites fixados para mensagem de estado vazio.
+         */
+        function renderSites(sites, container, isPinnedContainer = false) {
+            container.innerHTML = ''; // Clear previous content
+
+            if (sites.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.classList.add('empty-state');
+
+                if (isPinnedContainer) {
+                    emptyState.innerHTML = `
+                        <i class="fas fa-thumbtack"></i>
+                        <p>Nenhum site fixado ainda. Pressione e segure em um site (ou clique com o botão direito) para ver as ações e fixá-lo!</p>
+                    `;
+                } else if (currentSearch || currentFilter !== 'all') {
+                    emptyState.innerHTML = `
+                        <i class="fas fa-search"></i>
+                        <p>Nenhum site encontrado com os filtros ou pesquisa atual. Tente ajustar suas opções.</p>
+                    `;
+                } else {
+                    emptyState.innerHTML = `
+                        <i class="fas fa-bookmark"></i>
+                        <p>Sua central está vazia. Adicione seus sites favoritos acima para começar a organizar!</p>
+                    `;
+                }
+                container.appendChild(emptyState);
+                return;
+            }
+
+            sites.forEach(site => {
+                const siteCard = createSiteCard(site);
+                container.appendChild(siteCard);
+            });
+        }
+
+        /**
+         * Cria um elemento de card HTML para um site.
+         * Inclui o nome, URL, categoria, ícone (favicon ou inicial) e botões de ação.
+         * @param {Object} site - O objeto site com propriedades id, name, url, category, pinned.
+         * @returns {HTMLElement} O elemento DIV do card do site.
+         */
+        function createSiteCard(site) {
+            const siteCard = document.createElement('div');
+            siteCard.classList.add('site-card');
+            siteCard.dataset.siteId = site.id; // Add data attribute for easy lookup
+            if (site.pinned) siteCard.classList.add('pinned');
+            
+            const siteIcon = document.createElement('div');
+            siteIcon.classList.add('site-icon');
+            
+            const faviconUrl = `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(site.url)}`;
+            const img = new Image();
+            img.src = faviconUrl;
+
+            const firstLetter = site.name.charAt(0).toUpperCase();
+            siteIcon.innerHTML = `<div class="icon-fallback">${firstLetter}</div>`;
+            siteIcon.style.background = `linear-gradient(45deg, ${getRandomColor()}, ${getRandomColor()})`; // Dynamic background for fallback
+
+            img.onload = () => {
+                siteIcon.innerHTML = '';
+                siteIcon.appendChild(img);
+                siteIcon.dataset.hasFavicon = 'true'; // Indicate that favicon was loaded
+            };
+            img.onerror = () => {
+                siteIcon.dataset.hasFavicon = 'false'; // Indicate that favicon failed
+                // Fallback (first letter) already set
+            };
+            
+            const siteNameDisplay = document.createElement('span');
+            siteNameDisplay.classList.add('site-link');
+            siteNameDisplay.textContent = site.name;
+            siteNameDisplay.title = site.url;
+            
+            const cardActions = document.createElement('div');
+            cardActions.classList.add('card-actions');
+            
+            const pinBtn = document.createElement('button');
+            pinBtn.classList.add('action-btn', 'btn-pin');
+            pinBtn.title = site.pinned ? 'Desfixar' : 'Fixar';
+            pinBtn.innerHTML = `<i class="fas fa-thumbtack"></i>`;
+            pinBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePinSite(site.id);
+                hideSiteActions(siteCard);
+            });
+            
+            const editBtn = document.createElement('button');
+            editBtn.classList.add('action-btn', 'btn-edit');
+            editBtn.title = 'Editar';
+            editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditModal(site);
+                hideSiteActions(siteCard);
+            });
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.classList.add('action-btn', 'btn-remove');
+            removeBtn.title = 'Remover';
+            removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeSite(site.id, siteCard);
+                hideSiteActions(siteCard);
+            });
+            
+            const categoryBadge = document.createElement('div');
+            categoryBadge.classList.add('site-category');
+            categoryBadge.textContent = getCategoryName(site.category || 'geral');
+            
+            cardActions.appendChild(pinBtn);
+            cardActions.appendChild(editBtn);
+            cardActions.appendChild(removeBtn);
+            
+            siteCard.appendChild(cardActions);
+            siteCard.appendChild(siteIcon);
+            siteCard.appendChild(siteNameDisplay);
+            siteCard.appendChild(categoryBadge);
+            
+            // Event listeners for click/hold to show actions and open URL
+            let isLongPress = false;
+
+            siteCard.addEventListener('mousedown', (e) => {
+                if (e.button === 0) { // Left click
+                    pressTimer = setTimeout(() => {
+                        isLongPress = true;
+                        hideAllSiteActions();
+                        siteCard.classList.add('show-actions');
+                    }, LONG_PRESS_THRESHOLD);
+                }
+            });
+
+            siteCard.addEventListener('mouseup', (e) => {
+                clearTimeout(pressTimer);
+                if (!isLongPress && e.button === 0) {
+                    window.open(site.url, '_blank');
+                }
+                isLongPress = false;
+            });
+
+            siteCard.addEventListener('mouseleave', () => {
+                clearTimeout(pressTimer);
+                isLongPress = false;
+            });
+
+            // For mobile touch events
+            siteCard.addEventListener('touchstart', (e) => {
+                pressTimer = setTimeout(() => {
+                    isLongPress = true;
+                    hideAllSiteActions();
+                    siteCard.classList.add('show-actions');
+                }, LONG_PRESS_THRESHOLD);
+            }, { passive: true });
+
+            siteCard.addEventListener('touchend', (e) => {
+                clearTimeout(pressTimer);
+                if (!isLongPress) {
+                    setTimeout(() => {
+                        window.open(site.url, '_blank');
+                    }, 50);
+                }
+                isLongPress = false;
+            });
+
+            siteCard.addEventListener('touchcancel', () => {
+                clearTimeout(pressTimer);
+                isLongPress = false;
+            });
+
+            // Right-click (context menu) for desktop to show actions
+            siteCard.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                hideAllSiteActions();
+                siteCard.classList.add('show-actions');
+            });
+
+            return siteCard;
+        }
+
+        /**
+         * Gera uma cor hexadecimal aleatória.
+         * Usada para o fundo do ícone de fallback.
+         * @returns {string} Uma string de cor hexadecimal (ex: "#A1B2C3").
+         */
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        /**
+         * Esconde as ações de um card de site específico.
+         * @param {HTMLElement} cardElement - O elemento DIV do card do site.
+         */
+        function hideSiteActions(cardElement) {
+            cardElement.classList.remove('show-actions');
+        }
+
+        /**
+         * Esconde as ações de todos os cards de site visíveis.
+         */
+        function hideAllSiteActions() {
+            document.querySelectorAll('.site-card.show-actions').forEach(card => {
+                card.classList.remove('show-actions');
+            });
+        }
+
+        /**
+         * Adiciona um novo site à lista.
+         * Valida a entrada e exibe notificações.
+         */
+        function addSite() {
+            const name = siteNameInput.value.trim();
+            let url = siteUrlInput.value.trim();
+            const category = siteCategoryInput.value;
+
+            if (!name || !url) {
+                showNotification('Por favor, preencha o nome e a URL do site.', 'error');
+                return;
+            }
+
+            try {
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                const tempUrl = new URL(url); // Validates URL format
+                url = tempUrl.href; // Uses the canonical URL
+            } catch (e) {
+                showNotification('URL inválida. Por favor, insira um formato correto (Ex: https://example.com).', 'error');
+                return;
+            }
+
+            if (currentSites.some(s => s.url === url)) {
+                showNotification('Este site já está na sua lista!', 'warning');
+                return;
+            }
+
+            const site = { 
+                id: 'site-' + Date.now() + Math.floor(Math.random() * 1000),
+                name, 
+                url, 
+                category,
+                createdAt: new Date().toISOString(),
+                pinned: false
+            };
+
+            currentSites.unshift(site); // Add to the beginning of the array
+            saveAllSites();
+            filterAndRenderSites();
+            renderCategoryFilters(); // Update category filters after adding a new one
+            
+            showNotification(`Site "${name}" adicionado com sucesso!`, 'success');
+            updateStats();
+            
+            siteNameInput.value = '';
+            siteUrlInput.value = '';
+            siteNameInput.focus();
+        }
+
+        /**
+         * Remove um site da lista com uma animação de saída.
+         * @param {string} siteId - O ID único do site a ser removido.
+         * @param {HTMLElement} cardElement - O elemento DOM do card do site.
+         */
+        function removeSite(siteId, cardElement) {
+            cardElement.classList.add('fade-out');
+            
+            cardElement.addEventListener('animationend', () => {
+                currentSites = currentSites.filter(site => site.id !== siteId);
+                saveAllSites();
+                filterAndRenderSites();
+                renderCategoryFilters(); // Update category filters if a category was removed
+                showNotification('Site removido com sucesso!', 'info');
+                updateStats();
+            }, { once: true });
+        }
+
+        /**
+         * Alterna o estado "fixado" de um site.
+         * Move o site entre as seções fixadas e não fixadas.
+         * @param {string} siteId - O ID único do site.
+         */
+        function togglePinSite(siteId) {
+            const siteIndex = currentSites.findIndex(site => site.id === siteId);
+            if (siteIndex !== -1) {
+                currentSites[siteIndex].pinned = !currentSites[siteIndex].pinned;
+                
+                // If unpinning, trigger animation to remove from pinned section cleanly
+                if (!currentSites[siteIndex].pinned) {
+                    const cardToRemove = pinnedSitesContainer.querySelector(`[data-site-id="${siteId}"]`);
+                    if (cardToRemove) {
+                        cardToRemove.classList.add('fade-out');
+                        cardToRemove.addEventListener('animationend', () => {
+                            cardToRemove.remove();
+                            saveAllSites();
+                            filterAndRenderSites();
+                            showNotification(`Site desfixado com sucesso!`, 'info');
+                            updateStats();
+                        }, { once: true });
+                        return; // Exit early to prevent immediate re-render if animating
+                    }
+                }
+
+                saveAllSites();
+                filterAndRenderSites(); // Re-render to reflect changes
+                
+                const action = currentSites[siteIndex].pinned ? 'fixado' : 'desfixado';
+                showNotification(`Site ${action} com sucesso!`, 'info');
+                updateStats();
+            }
+        }
+
+        /**
+         * Abre o modal de edição com os dados do site selecionado.
+         * @param {Object} site - O objeto site a ser editado.
+         */
+        function openEditModal(site) {
+            editNameInput.value = site.name;
+            editUrlInput.value = site.url;
+            editCategoryInput.value = site.category || 'geral';
+            editSiteIdInput.value = site.id;
+            editSiteId = site.id;
+            
+            editModal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent body scroll
+        }
+
+        /**
+         * Fecha o modal de edição.
+         */
+        function closeModal() {
+            editModal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore body scroll
+        }
+
+        /**
+         * Salva as alterações feitas no site através do modal de edição.
+         * Valida a entrada e exibe notificações.
+         */
+        function saveEditedSite() {
+            const name = editNameInput.value.trim();
+            let url = editUrlInput.value.trim();
+            const category = editCategoryInput.value;
+
+            if (!name || !url) {
+                showNotification('Por favor, preencha o nome e a URL do site.', 'error');
+                return;
+            }
+
+            try {
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                const tempUrl = new URL(url);
+                url = tempUrl.href;
+            } catch (e) {
+                showNotification('URL inválida. Por favor, insira um formato correto (Ex: https://example.com).', 'error');
+                return;
+            }
+
+            const siteIndex = currentSites.findIndex(site => site.id === editSiteId);
+            if (siteIndex !== -1) {
+                currentSites[siteIndex].name = name;
+                currentSites[siteIndex].url = url;
+                currentSites[siteIndex].category = category;
+                
+                saveAllSites();
+                filterAndRenderSites();
+                renderCategoryFilters(); // Update category filters if a category was changed
+                closeModal();
+                
+                showNotification('Site atualizado com sucesso!', 'success');
+                updateStats();
+            }
+        }
+
+        /**
+         * Salva o array `currentSites` no localStorage.
+         */
+        function saveAllSites() {
+            localStorage.setItem('mySites', JSON.stringify(currentSites));
+        }
+
+        /**
+         * Exibe uma notificação pop-up.
+         * @param {string} message - A mensagem a ser exibida.
+         * @param {string} type - O tipo de notificação ('success', 'error', 'warning', 'info').
+         * @param {number} duration - Duração em milissegundos antes da notificação desaparecer.
+         */
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.classList.add('notification', `notification-${type}`);
+            
+            let icon;
+            switch(type) {
+                case 'success': icon = 'fa-check-circle'; break;
+                case 'error': icon = 'fa-exclamation-circle'; break;
+                case 'warning': icon = 'fa-exclamation-triangle'; break;
+                default: icon = 'fa-info-circle';
+            }
+            
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            // Remove after animation and duration
+            setTimeout(() => {
+                notification.remove();
+            }, duration + 500); 
+        }
+
+        /**
+         * Alterna entre o tema escuro e claro.
+         * Salva a preferência no localStorage.
+         */
+        function toggleTheme() {
+            if (document.body.classList.contains('dark-theme')) {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+                updateThemeToggle('light');
+            } else {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+                updateThemeToggle('dark');
+            }
+        }
+
+        /**
+         * Atualiza o ícone do botão de alternar tema.
+         * @param {string} theme - O tema atual ('dark' ou 'light').
+         */
+        function updateThemeToggle(theme) {
+            const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+            themeToggle.innerHTML = `<i class="fas ${icon}"></i>`;
+        }
+
+        /**
+         * Atualiza as estatísticas exibidas na interface.
+         */
+        function updateStats() {
+            totalSitesEl.textContent = currentSites.length;
+            
+            const pinnedCount = currentSites.filter(site => site.pinned).length;
+            pinnedSitesCountEl.textContent = pinnedCount;
+            
+            // Count unique categories that actually have sites associated with them
+            const categoriesWithSites = new Set(currentSites.map(site => site.category || 'geral'));
+            categoriesCountEl.textContent = categoriesWithSites.size;
+            
+            if (currentSites.length > 0) {
+                // Sort by createdAt descending to find the latest
+                const sortedSites = [...currentSites].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                lastAddedEl.textContent = sortedSites[0].name;
+            } else {
+                lastAddedEl.textContent = '-';
+            }
+        }
+
+        /**
+         * Retorna o nome amigável de uma categoria.
+         * @param {string} categoryKey - A chave da categoria (e.g., 'redes-sociais').
+         * @returns {string} O nome amigável da categoria (e.g., 'Redes Sociais').
+         */
+        function getCategoryName(categoryKey) {
+            return categoryNames[categoryKey] || categoryKey; // Fallback to key itself if not found
+        }
+    </script>
+</body>
+</html>
